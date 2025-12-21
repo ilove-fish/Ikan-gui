@@ -2,6 +2,25 @@
 ---
 
 -- [1] IKAN GUI GENERASI 2
+local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "CenterTextGui"
+gui.Parent = game.CoreGui
+
+local text = Instance.new("TextLabel")
+text.Parent = gui
+text.Size = UDim2.new(0, 400, 0, 80)
+text.Position = UDim2.new(0.5, -200, 0.5, -40)
+text.BackgroundTransparency = 1
+text.Text = "yang baca suka femboy"
+text.TextColor3 = Color3.fromRGB(255, 255, 255)
+text.TextScaled = true
+text.Font = Enum.Font.GothamBold
+text.TextStrokeTransparency = 0.3
+text.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+text.ZIndex = 10
 
 local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 local Frame = Instance.new("Frame", ScreenGui)
