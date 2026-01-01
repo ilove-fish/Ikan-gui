@@ -1,9 +1,20 @@
+
+---
+
+-- [1] IKAN GUI GENERASI 2
+local Players = game:GetService("Players")
+local lp = Players.LocalPlayer
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "CenterTextGui"
+gui.Parent = game.CoreGui
+
 local text = Instance.new("TextLabel")
 text.Parent = gui
 text.Size = UDim2.new(0, 400, 0, 80)
 text.Position = UDim2.new(0.5, -200, 0.5, -40)
 text.BackgroundTransparency = 1
-text.Text = "."
+text.Text = "1"
 text.TextColor3 = Color3.fromRGB(255, 255, 255)
 text.TextScaled = true
 text.Font = Enum.Font.GothamBold
@@ -57,24 +68,6 @@ local iiEnabled = false
 ---
 
 -- ESP SYSTEM
-_G.HeadSize = 5
-_G.Disabled = true
- 
-game:GetService('RunService').RenderStepped:connect(function()
-if _G.Disabled then
-for i,v in next, game:GetService('Players'):GetPlayers() do
-if v.Name ~= game:GetService('Players').LocalPlayer.Name then
-pcall(function()
-v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
-v.Character.HumanoidRootPart.Transparency = 0.7
-v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really blue")
-v.Character.HumanoidRootPart.Material = "Neon"
-v.Character.HumanoidRootPart.CanCollide = false
-end)
-end
-end
-end
-end)
 
 _G.FriendColor = Color3.fromRGB(0, 0, 255)
 _G.EnemyColor = Color3.fromRGB(255, 0, 0)
@@ -227,52 +220,6 @@ while task.wait() do
     end
 end
 
-local Players = game:GetService("Players")
-local Holder = Instance.new("Folder", game.CoreGui)
-Holder.Name = "ESP_Holder"
-
-local function AddESP(player)
-player.CharacterAdded:Connect(function(char)
-repeat task.wait() until char:FindFirstChild("HumanoidRootPart")
-if not espEnabled then return end
-
-local highlight = Instance.new("Highlight", char)  
-    highlight.FillColor = Color3.fromRGB(255,0,0)  
-    highlight.OutlineColor = Color3.fromRGB(255,255,255)  
-    highlight.Adornee = char  
-end)
-
-end
-
-local function ToggleESP()
-espEnabled = not espEnabled
-ESPbtn.Text = "ESP: " .. (espEnabled and "ON" or "OFF")
-
-if not espEnabled then  
-    for _,plr in pairs(Players:GetPlayers()) do  
-        if plr.Character and plr.Character:FindFirstChild("Highlight") then  
-            plr.Character.Highlight:Destroy()  
-        end  
-    end  
-    return  
-end  
-
-for _,plr in pairs(Players:GetPlayers()) do  
-    AddESP(plr)  
-    if plr.Character then  
-        local highlight = Instance.new("Highlight", plr.Character)  
-        highlight.FillColor = Color3.fromRGB(255,0,0)  
-        highlight.OutlineColor = Color3.fromRGB(255,255,255)  
-        highlight.Adornee = plr.Character  
-    end  
-end
-
-end
-
-for _,plr in pairs(Players:GetPlayers()) do AddESP(plr) end
-Players.PlayerAdded:Connect(AddESP)
-ESPbtn.MouseButton1Click:Connect(ToggleESP)
-
 
 ---
 
@@ -303,6 +250,25 @@ end
 
 FBbtn.MouseButton1Click:Connect(ToggleFB)
 
+
+_G.HeadSize = 5
+_G.Disabled = true
+ 
+game:GetService('RunService').RenderStepped:connect(function()
+if _G.Disabled then
+for i,v in next, game:GetService('Players'):GetPlayers() do
+if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+pcall(function()
+v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+v.Character.HumanoidRootPart.Transparency = 0.1
+v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really blue")
+v.Character.HumanoidRootPart.Material = "Neon"
+v.Character.HumanoidRootPart.CanCollide = false
+end)
+end
+end
+end
+end)
 
 ---
 
