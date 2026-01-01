@@ -40,7 +40,7 @@ local function MakeButton(txt, y)
     b.TextColor3 = Color3.new(1,1,1)
     b.Text = txt
     b.Font = Enum.Font.SourceSansBold
-    b.TextSize = 8
+    b.TextSize = 18
     return b
 end
 
@@ -109,12 +109,12 @@ local function applyESP(plr)
     local bb = Instance.new("BillboardGui")
     bb.Name = "IKAN_TAG"
     bb.Adornee = head
-    bb.Size = UDim2.new(0,200,0,40)
+    bb.Size = UDim2.new(0,100,0,20)
     bb.StudsOffset = Vector3.new(0,2,0)
     bb.AlwaysOnTop = true
 
     local tl = Instance.new("TextLabel", bb)
-    tl.Size = UDim2.new(1,0,1,0)
+    tl.Size = UDim2.new(0.5,0,0.5,0)
     tl.BackgroundTransparency = 1
     tl.Text = plr.Name
     tl.TextColor3 = Color3.new(1,1,1)
