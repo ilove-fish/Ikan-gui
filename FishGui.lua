@@ -40,7 +40,7 @@ local function MakeButton(txt, y)
     b.TextColor3 = Color3.new(1,1,1)
     b.Text = txt
     b.Font = Enum.Font.SourceSansBold
-    b.TextSize = 18
+    b.TextSize = 8
     return b
 end
 
@@ -76,7 +76,7 @@ local function clearESP(char)
     if char:FindFirstChild("HumanoidRootPart") then
         local hrp = char.HumanoidRootPart
         hrp.Size = Vector3.new(2,2,1)
-        hrp.Transparency = 1
+        hrp.Transparency = 0.1
         hrp.Material = Enum.Material.Plastic
         hrp.CanCollide = true
     end
