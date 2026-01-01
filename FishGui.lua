@@ -1,3 +1,20 @@
+-- Anti duplicate loader for FishGui
+
+local GUI_NAME = "FishGui_Main"
+
+-- kalau sudah pernah dijalankan
+if getgenv().FishGuiLoaded then
+    -- hapus GUI lama (refresh)
+    if game.CoreGui:FindFirstChild(GUI_NAME) then
+        game.CoreGui[GUI_NAME]:Destroy()
+    end
+else
+    getgenv().FishGuiLoaded = true
+end
+
+-- load ulang script
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ilove-fish/ikan-gui/main/FishGui.lua"))()
+
 local Players = game:GetService("Players")
 local lp = Players.LocalPlayer
 
