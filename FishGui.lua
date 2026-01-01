@@ -1,28 +1,24 @@
+--==================================================
+-- IKAN GUI GENERASI 3 (FIX TOTAL)
+-- ESP + NAMETAG + HITBOX (SATU TOGGLE)
+-- GUI TOGGLE FIX
+--==================================================
 
----
-
--- [1] IKAN GUI GENERASI 2
+-- SERVICES
 local Players = game:GetService("Players")
+local Lighting = game:GetService("Lighting")
+local PPS = game:GetService("ProximityPromptService")
+local CoreGui = game:GetService("CoreGui")
+local RunService = game:GetService("RunService")
+
 local lp = Players.LocalPlayer
 
-local gui = Instance.new("ScreenGui")
-gui.Name = "CenterTextGui"
-gui.Parent = game.CoreGui
+--==================================================
+-- GUI UTAMA
+--==================================================
+local ScreenGui = Instance.new("ScreenGui", CoreGui)
+ScreenGui.Name = "IkanGuiGen3"
 
-local text = Instance.new("TextLabel")
-text.Parent = gui
-text.Size = UDim2.new(0, 400, 0, 80)
-text.Position = UDim2.new(0.5, -200, 0.5, -40)
-text.BackgroundTransparency = 1
-text.Text = "1"
-text.TextColor3 = Color3.fromRGB(255, 255, 255)
-text.TextScaled = true
-text.Font = Enum.Font.GothamBold
-text.TextStrokeTransparency = 0.3
-text.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-text.ZIndex = 10
-
-local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
 local Frame = Instance.new("Frame", ScreenGui)
 Frame.Size = UDim2.new(0, 220, 0, 260)
 Frame.Position = UDim2.new(0.05, 0, 0.3, 0)
@@ -32,21 +28,20 @@ Frame.Draggable = true
 
 local BG = Instance.new("ImageLabel", Frame)
 BG.Size = UDim2.new(1,0,1,0)
-BG.Position = UDim2.new(0,0,0,0)
-BG.Image = "rbxassetid://176345216"
 BG.BackgroundTransparency = 1
 BG.ImageTransparency = 0.25
+BG.Image = "rbxassetid://176345216"
 
-function MakeButton(txt, y)
-local b = Instance.new("TextButton", Frame)
-b.Size = UDim2.new(1, -20, 0, 35)
-b.Position = UDim2.new(0, 10, 0, y)
-b.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-b.TextColor3 = Color3.new(1,1,1)
-b.Text = txt
-b.Font = Enum.Font.SourceSansBold
-b.TextSize = 18
-return b
+local function MakeButton(txt, y)
+    local b = Instance.new("TextButton", Frame)
+    b.Size = UDim2.new(1, -20, 0, 35)
+    b.Position = UDim2.new(0, 10, 0, y)
+    b.BackgroundColor3 = Color3.fromRGB(35,35,35)
+    b.TextColor3 = Color3.new(1,1,1)
+    b.Text = txt
+    b.Font = Enum.Font.SourceSansBold
+    b.TextSize = 18
+    return b
 end
 
 local ESPbtn  = MakeButton("ESP: OFF", 10)
@@ -55,307 +50,183 @@ local INTbtn  = MakeButton("Instant Interact: OFF", 100)
 local FLYbtn  = MakeButton("Fly: RUN", 145)
 local AAFKbtn = MakeButton("Anti-AFK: RUN", 190)
 
-
----
-
--- VARIABEL
-
+--==================================================
+-- VAR
+--==================================================
 local espEnabled = false
 local fbEnabled = false
 local iiEnabled = false
 
+--==================================================
+-- ESP + NAMETAG + HITBOX
+--==================================================
+local ESPFolder = Instance.new("Folder", CoreGui)
+ESPFolder.Name = "IKAN_ESP"
 
----
+local HITBOX_SIZE = 6
 
--- ESP SYSTEM
-
-_G.FriendColor = Color3.fromRGB(0, 0, 255)
-_G.EnemyColor = Color3.fromRGB(255, 0, 0)
-_G.UseTeamColor = true
-
---------------------------------------------------------------------
-local Holder = Instance.new("Folder", game.CoreGui)
-Holder.Name = "ESP"
-
-local Box = Instance.new("BoxHandleAdornment")
-Box.Name = "nilBox"
-Box.Size = Vector3.new(1, 2, 1)
-Box.Color3 = Color3.new(100 / 255, 100 / 255, 100 / 255)
-Box.Transparency = 0.7
-Box.ZIndex = 0
-Box.AlwaysOnTop = false
-Box.Visible = false
-
-local NameTag = Instance.new("BillboardGui")
-NameTag.Name = "nilNameTag"
-NameTag.Enabled = false
-NameTag.Size = UDim2.new(0, 200, 0, 50)
-NameTag.AlwaysOnTop = true
-NameTag.StudsOffset = Vector3.new(0, 1.8, 0)
-local Tag = Instance.new("TextLabel", NameTag)
-Tag.Name = "Tag"
-Tag.BackgroundTransparency = 1
-Tag.Position = UDim2.new(0, -50, 0, 0)
-Tag.Size = UDim2.new(0, 300, 0, 20)
-Tag.TextSize = 15
-Tag.TextColor3 = Color3.new(100 / 255, 100 / 255, 100 / 255)
-Tag.TextStrokeColor3 = Color3.new(0 / 255, 0 / 255, 0 / 255)
-Tag.TextStrokeTransparency = 0.4
-Tag.Text = "nil"
-Tag.Font = Enum.Font.SourceSansBold
-Tag.TextScaled = false
-
-local LoadCharacter = function(v)
-	repeat wait() until v.Character ~= nil
-	v.Character:WaitForChild("Humanoid")
-	local vHolder = Holder:FindFirstChild(v.Name)
-	vHolder:ClearAllChildren()
-	local b = Box:Clone()
-	b.Name = v.Name .. "Box"
-	b.Adornee = v.Character
-	b.Parent = vHolder
-	local t = NameTag:Clone()
-	t.Name = v.Name .. "NameTag"
-	t.Enabled = true
-	t.Parent = vHolder
-	t.Adornee = v.Character:WaitForChild("Head", 5)
-	if not t.Adornee then
-		return UnloadCharacter(v)
-	end
-	t.Tag.Text = v.Name
-	b.Color3 = Color3.new(v.TeamColor.r, v.TeamColor.g, v.TeamColor.b)
-	t.Tag.TextColor3 = Color3.new(v.TeamColor.r, v.TeamColor.g, v.TeamColor.b)
-	local Update
-	local UpdateNameTag = function()
-		if not pcall(function()
-			v.Character.Humanoid.DisplayDistanceType = Enum.HumanoidDisplayDistanceType.None
-			local maxh = math.floor(v.Character.Humanoid.MaxHealth)
-			local h = math.floor(v.Character.Humanoid.Health)
-		end) then
-			Update:Disconnect()
-		end
-	end
-	UpdateNameTag()
-	Update = v.Character.Humanoid.Changed:Connect(UpdateNameTag)
+local function clearESP(char)
+    if not char then return end
+    if char:FindFirstChild("IKAN_HL") then
+        char.IKAN_HL:Destroy()
+    end
+    if char:FindFirstChild("IKAN_TAG") then
+        char.IKAN_TAG:Destroy()
+    end
+    if char:FindFirstChild("HumanoidRootPart") then
+        local hrp = char.HumanoidRootPart
+        hrp.Size = Vector3.new(2,2,1)
+        hrp.Transparency = 1
+        hrp.Material = Enum.Material.Plastic
+        hrp.CanCollide = true
+    end
 end
 
-local UnloadCharacter = function(v)
-	local vHolder = Holder:FindFirstChild(v.Name)
-	if vHolder and (vHolder:FindFirstChild(v.Name .. "Box") ~= nil or vHolder:FindFirstChild(v.Name .. "NameTag") ~= nil) then
-		vHolder:ClearAllChildren()
-	end
+local function applyESP(plr)
+    if plr == lp then return end
+    if not plr.Character then return end
+    local char = plr.Character
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    local head = char:FindFirstChild("Head")
+    if not hrp or not head then return end
+
+    -- HITBOX
+    hrp.Size = Vector3.new(HITBOX_SIZE, HITBOX_SIZE, HITBOX_SIZE)
+    hrp.Transparency = 0.4
+    hrp.Material = Enum.Material.Neon
+    hrp.CanCollide = false
+
+    -- HIGHLIGHT
+    local hl = Instance.new("Highlight")
+    hl.Name = "IKAN_HL"
+    hl.Adornee = char
+    hl.FillColor = Color3.fromRGB(255,0,0)
+    hl.OutlineColor = Color3.fromRGB(255,255,255)
+    hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    hl.Parent = char
+
+    -- NAMETAG
+    local bb = Instance.new("BillboardGui")
+    bb.Name = "IKAN_TAG"
+    bb.Adornee = head
+    bb.Size = UDim2.new(0,200,0,40)
+    bb.StudsOffset = Vector3.new(0,2,0)
+    bb.AlwaysOnTop = true
+
+    local tl = Instance.new("TextLabel", bb)
+    tl.Size = UDim2.new(1,0,1,0)
+    tl.BackgroundTransparency = 1
+    tl.Text = plr.Name
+    tl.TextColor3 = Color3.new(1,1,1)
+    tl.TextStrokeTransparency = 0
+    tl.Font = Enum.Font.GothamBold
+    tl.TextScaled = true
+
+    bb.Parent = char
 end
 
-local LoadPlayer = function(v)
-	local vHolder = Instance.new("Folder", Holder)
-	vHolder.Name = v.Name
-	v.CharacterAdded:Connect(function()
-		pcall(LoadCharacter, v)
-	end)
-	v.CharacterRemoving:Connect(function()
-		pcall(UnloadCharacter, v)
-	end)
-	v.Changed:Connect(function(prop)
-		if prop == "TeamColor" then
-			UnloadCharacter(v)
-			wait()
-			LoadCharacter(v)
-		end
-	end)
-	LoadCharacter(v)
-end
-
-local UnloadPlayer = function(v)
-	UnloadCharacter(v)
-	local vHolder = Holder:FindFirstChild(v.Name)
-	if vHolder then
-		vHolder:Destroy()
-	end
-end
-
-for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-	spawn(function() pcall(LoadPlayer, v) end)
-end
-
-game:GetService("Players").PlayerAdded:Connect(function(v)
-	pcall(LoadPlayer, v)
-end)
-
-game:GetService("Players").PlayerRemoving:Connect(function(v)
-	pcall(UnloadPlayer, v)
-end)
-
-game:GetService("Players").LocalPlayer.NameDisplayDistance = 0
-
-if _G.Reantheajfdfjdgs then
-    return
-end
-
-_G.Reantheajfdfjdgs = ":suifayhgvsdghfsfkajewfrhk321rk213kjrgkhj432rj34f67df"
-
-local players = game:GetService("Players")
-local plr = players.LocalPlayer
-
-function esp(target, color)
-    if target.Character then
-        if not target.Character:FindFirstChild("GetReal") then
-            local highlight = Instance.new("Highlight")
-            highlight.RobloxLocked = true
-            highlight.Name = "GetReal"
-            highlight.Adornee = target.Character
-            highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-            highlight.FillColor = color
-            highlight.Parent = target.Character
-        else
-            target.Character.GetReal.FillColor = color
+local function refreshESP()
+    for _,p in pairs(Players:GetPlayers()) do
+        if p.Character then
+            clearESP(p.Character)
+            if espEnabled then
+                applyESP(p)
+            end
         end
     end
 end
 
-while task.wait() do
-    for i, v in pairs(players:GetPlayers()) do
-        if v ~= plr then
-            esp(v, _G.UseTeamColor and v.TeamColor.Color or ((plr.TeamColor == v.TeamColor) and _G.FriendColor or _G.EnemyColor))
+ESPbtn.MouseButton1Click:Connect(function()
+    espEnabled = not espEnabled
+    ESPbtn.Text = "ESP: " .. (espEnabled and "ON" or "OFF")
+    refreshESP()
+end)
+
+Players.PlayerAdded:Connect(function(p)
+    p.CharacterAdded:Connect(function()
+        task.wait(0.5)
+        if espEnabled then
+            applyESP(p)
         end
-    end
-end
+    end)
+end)
 
-
----
-
+--==================================================
 -- FULLBRIGHT
-
-local Lighting = game:GetService("Lighting")
+--==================================================
 local normal = {
-Brightness = Lighting.Brightness,
-ClockTime = Lighting.ClockTime,
-Ambient = Lighting.Ambient
+    Brightness = Lighting.Brightness,
+    ClockTime = Lighting.ClockTime,
+    Ambient = Lighting.Ambient
 }
 
-local function ToggleFB()
-fbEnabled = not fbEnabled
-FBbtn.Text = "FullBright: " .. (fbEnabled and "ON" or "OFF")
-
-if fbEnabled then  
-    Lighting.Brightness = 1  
-    Lighting.ClockTime = 12  
-    Lighting.Ambient = Color3.new(1,1,1)  
-else  
-    Lighting.Brightness = normal.Brightness  
-    Lighting.ClockTime = normal.ClockTime  
-    Lighting.Ambient = normal.Ambient  
-end
-
-end
-
-FBbtn.MouseButton1Click:Connect(ToggleFB)
-
-
-_G.HeadSize = 5
-_G.Disabled = true
- 
-game:GetService('RunService').RenderStepped:connect(function()
-if _G.Disabled then
-for i,v in next, game:GetService('Players'):GetPlayers() do
-if v.Name ~= game:GetService('Players').LocalPlayer.Name then
-pcall(function()
-v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
-v.Character.HumanoidRootPart.Transparency = 0.1
-v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really blue")
-v.Character.HumanoidRootPart.Material = "Neon"
-v.Character.HumanoidRootPart.CanCollide = false
-end)
-end
-end
-end
+FBbtn.MouseButton1Click:Connect(function()
+    fbEnabled = not fbEnabled
+    FBbtn.Text = "FullBright: " .. (fbEnabled and "ON" or "OFF")
+    if fbEnabled then
+        Lighting.Brightness = 1
+        Lighting.ClockTime = 12
+        Lighting.Ambient = Color3.new(1,1,1)
+    else
+        Lighting.Brightness = normal.Brightness
+        Lighting.ClockTime = normal.ClockTime
+        Lighting.Ambient = normal.Ambient
+    end
 end)
 
----
-
+--==================================================
 -- INSTANT INTERACT
+--==================================================
+INTbtn.MouseButton1Click:Connect(function()
+    iiEnabled = not iiEnabled
+    INTbtn.Text = "Instant Interact: " .. (iiEnabled and "ON" or "OFF")
+    if iiEnabled then
+        PPS.PromptButtonHoldBegan:Connect(function(prompt)
+            pcall(fireproximityprompt, prompt)
+        end)
+    end
+end)
 
-local PPS = game:GetService("ProximityPromptService")
-
-local function ToggleII()
-iiEnabled = not iiEnabled
-INTbtn.Text = "Instant Interact: " .. (iiEnabled and "ON" or "OFF")
-
-if iiEnabled then  
-    PPS.PromptButtonHoldBegan:Connect(function(prompt)  
-        pcall(fireproximityprompt, prompt)  
-    end)  
-end
-
-end
-
-INTbtn.MouseButton1Click:Connect(ToggleII)
-
-
----
-
--- FLY BUTTON
-
+--==================================================
+-- FLY
+--==================================================
 FLYbtn.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet(
-"https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"
-))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt"))()
 end)
 
-
----
-
--- ANTI AFK BUTTON
-
+--==================================================
+-- ANTI AFK
+--==================================================
 AAFKbtn.MouseButton1Click:Connect(function()
-loadstring(game:HttpGet(
-"https://raw.githubusercontent.com/evxncodes/mainroblox/main/anti-afk",
-true
-))()
+    loadstring(game:HttpGet(
+        "https://raw.githubusercontent.com/evxncodes/mainroblox/main/anti-afk",
+        true
+    ))()
 end)
 
-
----
-
--- [2] TOGGLE GUI (SEMBUNYI / MUNCUL)
-
-local CoreGui = game:GetService("CoreGui")
-
-local TargetGui
-for _,v in pairs(CoreGui:GetChildren()) do
-if v:IsA("ScreenGui") then
-local f = v:FindFirstChildOfClass("Frame")
-if f and f.Size == UDim2.new(0,220,0,260) then
-TargetGui = v
-break
-end
-end
-end
-
-if not TargetGui then
-warn("GUI target tidak ditemukan")
-return
-end
-
+--==================================================
+-- TOGGLE GUI BUTTON (FIX)
+--==================================================
 local ToggleGui = Instance.new("ScreenGui", CoreGui)
-ToggleGui.Name = "GuiToggleBtn"
+ToggleGui.Name = "IkanGuiToggle"
 
-local Btn = Instance.new("TextButton", ToggleGui)
-Btn.Size = UDim2.new(0, 45, 0, 45)
-Btn.Position = UDim2.new(0, 10, 0.5, -22)
-Btn.BackgroundColor3 = Color3.fromRGB(30,30,30)
-Btn.Text = "🐟"
-Btn.TextColor3 = Color3.new(1,1,1)
-Btn.Font = Enum.Font.GothamBold
-Btn.TextSize = 24
-Btn.Active = true
-Btn.Draggable = true
+local TBtn = Instance.new("TextButton", ToggleGui)
+TBtn.Size = UDim2.new(0,45,0,45)
+TBtn.Position = UDim2.new(0,10,0.5,-22)
+TBtn.BackgroundColor3 = Color3.fromRGB(30,30,30)
+TBtn.Text = "🐟"
+TBtn.TextColor3 = Color3.new(1,1,1)
+TBtn.Font = Enum.Font.GothamBold
+TBtn.TextSize = 24
+TBtn.Active = true
+TBtn.Draggable = true
 
-Instance.new("UICorner", Btn).CornerRadius = UDim.new(1,0)
+Instance.new("UICorner", TBtn).CornerRadius = UDim.new(1,0)
 
 local visible = true
-Btn.MouseButton1Click:Connect(function()
-visible = not visible
-TargetGui.Enabled = visible
+TBtn.MouseButton1Click:Connect(function()
+    visible = not visible
+    ScreenGui.Enabled = visible
 end)
 
-print("gatau mau nulis apa")
+print("IKAN GUI GEN 3 FIXED")
