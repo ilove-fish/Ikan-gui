@@ -92,7 +92,7 @@ local function applyESP(plr)
 
     -- HITBOX
     hrp.Size = Vector3.new(HITBOX_SIZE, HITBOX_SIZE, HITBOX_SIZE)
-    hrp.Transparency = 1
+    hrp.Transparency = 0.8
     hrp.Material = Enum.Material.Neon
     hrp.CanCollide = false
 
@@ -110,7 +110,7 @@ local function applyESP(plr)
     bb.Name = "IKAN_TAG"
     bb.Adornee = head
     bb.Size = UDim2.new(0,100,0,20)
-    bb.StudsOffset = Vector3.new(0,2,0)
+    bb.StudsOffset = Vector3.new(1,1,1)
     bb.AlwaysOnTop = true
 
     local tl = Instance.new("TextLabel", bb)
