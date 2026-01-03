@@ -92,7 +92,7 @@ local function applyESP(plr)
 
     -- HITBOX
     hrp.Size = Vector3.new(HITBOX_SIZE, HITBOX_SIZE, HITBOX_SIZE)
-    hrp.Transparency = 0.1
+    hrp.Transparency = 2
     hrp.Material = Enum.Material.Neon
     hrp.CanCollide = false
 
