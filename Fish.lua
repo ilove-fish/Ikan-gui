@@ -1,9 +1,4 @@
---==================================================
--- IKAN GUI GENERASI 3 (FIX TOTAL)
--- ESP + NAMETAG + HITBOX (SATU TOGGLE)
--- GUI TOGGLE FIX
---==================================================
-
+-- generasi 4
 -- SERVICES
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
