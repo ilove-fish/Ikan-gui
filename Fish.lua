@@ -172,7 +172,7 @@ GlobalShadows = Lighting.GlobalShadows
 }
 
 MainTab:CreateToggle({
-Name = "FullBright",
+Name = "FullBright.noshadow.nofog",
 CurrentValue = false,
 Callback = function(v)
 
