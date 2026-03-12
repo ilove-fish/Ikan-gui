@@ -12,7 +12,7 @@ local lp = Players.LocalPlayer
 local Window = Rayfield:CreateWindow({
     Name = "Ikan GUI Gen 7",
     LoadingTitle = "Ikan GUI",
-    LoadingSubtitle = "by ikan",
+    LoadingSubtitle = "by Ilovefish",
     ConfigurationSaving = {Enabled = false}
 })
 
