@@ -366,3 +366,101 @@ Title = "Ikan GUI",
 Content = "Gen 7 Loaded Successfully",
 Duration = 5
 })
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local lp = Players.LocalPlayer
+
+-- GUI
+local gui = Instance.new("ScreenGui")
+gui.Name = "SpeedJumpUI"
+gui.ResetOnSpawn = false
+gui.Parent = game.CoreGui
+
+-- LEFT FRAME
+local frame = Instance.new("Frame")
+frame.Parent = gui
+frame.Size = UDim2.new(0,120,0,50)
+frame.Position = UDim2.new(0,10,0,200)
+frame.BackgroundColor3 = Color3.fromRGB(20,20,20)
+frame.BackgroundTransparency = 0.2
+frame.BorderSizePixel = 0
+
+local text = Instance.new("TextLabel")
+text.Parent = frame
+text.Size = UDim2.new(1,0,1,0)
+text.BackgroundTransparency = 1
+text.TextColor3 = Color3.new(1,1,1)
+text.Font = Enum.Font.GothamBold
+text.TextScaled = true
+text.Text = "Loading..."
+
+-- METRIC LABEL
+local metricLabel = Instance.new("TextLabel")
+metricLabel.Parent = gui
+metricLabel.Size = UDim2.new(0,30,0,50)
+metricLabel.Position = UDim2.new(0,135,0,200)
+metricLabel.BackgroundTransparency = 1
+metricLabel.Text = "M\nE\nT\nR\nI\nC"
+metricLabel.TextColor3 = Color3.new(1,1,1)
+metricLabel.Font = Enum.Font.GothamBold
+metricLabel.TextScaled = true
+
+-- RIGHT FRAME
+local frame2 = Instance.new("Frame")
+frame2.Parent = gui
+frame2.Size = UDim2.new(0,120,0,50)
+frame2.Position = UDim2.new(0,170,0,200)
+frame2.BackgroundColor3 = Color3.fromRGB(20,20,20)
+frame2.BackgroundTransparency = 0.2
+frame2.BorderSizePixel = 0
+
+local metricText = Instance.new("TextLabel")
+metricText.Parent = frame2
+metricText.Size = UDim2.new(1,0,1,0)
+metricText.BackgroundTransparency = 1
+metricText.TextColor3 = Color3.new(1,1,1)
+metricText.Font = Enum.Font.GothamBold
+metricText.TextScaled = true
+metricText.Text = "Loading..."
+
+-- VARIABLES
+local lastPos = nil
+local lastSpeed = 0
+
+RunService.RenderStepped:Connect(function(dt)
+
+	local char = lp.Character
+	if not char then return end
+
+	local hum = char:FindFirstChildOfClass("Humanoid")
+	local root = char:FindFirstChild("HumanoidRootPart")
+
+	if not hum or not root then return end
+
+	-- DISPLAY ROBLOX STATS
+	text.Text =
+	"Speed: "..math.floor(hum.WalkSpeed)..
+	"\nJump: "..math.floor(hum.JumpPower)
+
+	-- TRUE SPEED
+	local speed = 0
+
+	if lastPos then
+		local distance = (root.Position - lastPos).Magnitude
+		speed = distance / math.max(dt,0.001)
+	end
+
+	lastPos = root.Position
+
+	-- ACCELERATION
+	local acceleration = (speed - lastSpeed) / math.max(dt,0.001)
+	lastSpeed = speed
+
+	-- DISPLAY METRIC
+	metricText.Text =
+	"Acc: "..math.floor(acceleration)..
+	"\nSpd: "..math.floor(speed)
+
+end)
