@@ -159,6 +159,35 @@ end
 })
 
 -------------------------------------------------
+-- ESP AUTO REFRESH (EVERY 10 SECONDS)
+-------------------------------------------------
+
+task.spawn(function()
+
+while true do
+task.wait(10)
+
+if espEnabled then
+
+-- matikan esp dulu
+for _,p in pairs(Players:GetPlayers()) do
+if p ~= lp then
+clearESP(p.Character)
+end
+end
+
+task.wait(0.2)
+
+-- nyalakan lagi
+refreshESP()
+
+end
+
+end
+
+end)
+
+-------------------------------------------------
 -- FULLBRIGHT
 -------------------------------------------------
 
