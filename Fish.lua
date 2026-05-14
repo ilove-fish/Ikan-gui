@@ -362,7 +362,7 @@ local FakeBuyTab = Window:CreateTab("FakeBuy", 4483362458) -- bisa ganti icon ID
 
 -- Tombol PC
 FakeBuyTab:CreateButton({
-   Name = "pc",
+   Name = "pc version",
    Callback = function()
       loadstring(game:HttpGet("https://gist.githubusercontent.com/ilove-fish/64d0387ab52baedc94b7a189c9569021/raw/64836dc6794d0f04429b8692501b9c9be9a86add/gistfile1.txt"))()
    end,
@@ -370,7 +370,7 @@ FakeBuyTab:CreateButton({
 
 -- Tombol Mobile
 FakeBuyTab:CreateButton({
-   Name = "mobile",
+   Name = "mobile version",
    Callback = function()
       loadstring(game:HttpGet("https://pastefy.app/yVlxzwk8/raw"))()
    end,
