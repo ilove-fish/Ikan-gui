@@ -307,9 +307,8 @@ end
 --auto interact
 ---------------
 MainTab:CreateButton({
-Name = "Auto Interact nearest",
-CurrentValue = false
-Callback = function(v)
+Name = "Auto Interact Nearest(stack)",
+Callback = function()
 
 loadstring(game:HttpGet("https://gist.githubusercontent.com/ilove-fish/2237d2d589a986ebc6f6db0d85f0fcc4/raw/a624e5ef3fdabd34a7b99bc29d05c0c7df3c5a76/Auto%2520Interact"))()
 
