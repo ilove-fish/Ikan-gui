@@ -317,24 +317,15 @@ end
 ----------
 normal esp
 ----------
-MainTab:CreateButton({
-Name = "normal esp",
-Callback = function()
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ilove-fish/Esp/refs/heads/main/Esp"))()
-
-end
-})
-----------
-shiftlock
-----------
 MainTab:CreateToggle({
-    Name = "Shift Lock",
+    Name = "ESP",
     CurrentValue = false,
-    Flag = "ShiftLock",
+    Flag = "ESP",
     Callback = function(Value)
+        _G.ESPEnabled = Value
+
         if Value then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/ilove-fish/Shiftlock/refs/heads/main/Shiflock"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/ilove-fish/Esp/main/Esp"))()
         end
     end,
 })
