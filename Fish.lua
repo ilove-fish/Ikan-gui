@@ -314,21 +314,7 @@ loadstring(game:HttpGet("https://gist.githubusercontent.com/ilove-fish/2237d2d58
 
 end
 })
-----------
-normal esp
-----------
-MainTab:CreateToggle({
-    Name = "ESP",
-    CurrentValue = false,
-    Flag = "ESP",
-    Callback = function(Value)
-        _G.ESPEnabled = Value
 
-        if Value then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/ilove-fish/Esp/main/Esp"))()
-        end
-    end,
-})
 -------------------------------------------------
 -- SOMETHING TAB
 -------------------------------------------------
