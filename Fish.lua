@@ -330,8 +330,6 @@ shiftlock
 ----------
 MainTab:CreateToggle({
     Name = "Shift Lock",
-    CurrentValue = false,
-    Flag = "ShiftLock",
     Callback = function(Value)
         if Value then
             loadstring(game:HttpGet("https://raw.githubusercontent.com/ilove-fish/Shiftlock/refs/heads/main/Shiflock"))()
