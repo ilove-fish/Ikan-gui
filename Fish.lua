@@ -314,6 +314,17 @@ loadstring(game:HttpGet("https://gist.githubusercontent.com/ilove-fish/2237d2d58
 
 end
 })
+----------
+normal esp
+----------
+MainTab:CreateButton({
+Name = "normal esp",
+Callback = function()
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ilove-fish/Esp/refs/heads/main/Esp"))()
+
+end
+})
 -------------------------------------------------
 -- SOMETHING TAB
 -------------------------------------------------
@@ -368,7 +379,14 @@ end
 })
 
 -- Tab baru
-local FakeBuyTab = Window:CreateTab("FakeBuy", 4483362458) -- bisa ganti icon ID
+local FakeBuyTab = Window:CreateTab("FakeBuy", RMainTab:CreateButton({
+Name = "Fly",
+Callback = function()
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ilove-fish/Esp/refs/heads/main/Esp"))()
+
+end
+})) -- bisa ganti icon ID
 
 -- Tombol PC
 FakeBuyTab:CreateButton({
