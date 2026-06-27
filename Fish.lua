@@ -10,7 +10,7 @@ local lp = Players.LocalPlayer
 
 -- WINDOW
 local Window = Rayfield:CreateWindow({
-    Name = "Ikan GUI Gen 8",
+    Name = "Ikan GUI Gen 9",
     LoadingTitle = "Ikan GUI",
     LoadingSubtitle = "by Ilovefish",
     ConfigurationSaving = {Enabled = false}
@@ -25,7 +25,7 @@ local fbEnabled = false
 local interactConnection
 local antiAFK = false
 
-local HITBOX_SIZE = 6
+local HITBOX_SIZE = 7
 
 -------------------------------------------------
 -- ESP FUNCTIONS
@@ -314,7 +314,6 @@ loadstring(game:HttpGet("https://gist.githubusercontent.com/ilove-fish/2237d2d58
 
 end
 })
-
 -------------------------------------------------
 -- SOMETHING TAB
 -------------------------------------------------
@@ -368,7 +367,8 @@ end
 end
 })
 
-})) -- bisa ganti icon ID
+-- Tab baru
+local FakeBuyTab = Window:CreateTab("FakeBuy", 4483362458) -- bisa ganti icon ID
 
 -- Tombol PC
 FakeBuyTab:CreateButton({
@@ -391,7 +391,7 @@ FakeBuyTab:CreateButton({
 
 Rayfield:Notify({
 Title = "Ikan GUI",
-Content = "Gen 8 Loaded Successfully",
+Content = "Gen 9 Loaded Successfully",
 Duration = 5
 })
 
