@@ -368,14 +368,6 @@ end
 end
 })
 
--- Tab baru
-local FakeBuyTab = Window:CreateTab("FakeBuy", RMainTab:CreateButton({
-Name = "Fly",
-Callback = function()
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ilove-fish/Esp/refs/heads/main/Esp"))()
-
-end
 })) -- bisa ganti icon ID
 
 -- Tombol PC
